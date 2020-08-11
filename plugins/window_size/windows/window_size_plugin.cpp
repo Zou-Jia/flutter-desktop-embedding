@@ -40,6 +40,7 @@ const char kGetScreenListMethod[] = "getScreenList";
 const char kGetWindowInfoMethod[] = "getWindowInfo";
 const char kSetWindowFrameMethod[] = "setWindowFrame";
 const char kSetWindowTitleMethod[] = "setWindowTitle";
+const char kSetWindowMaximizeMethod[] = "setWindowMaximize";
 const char kFrameKey[] = "frame";
 const char kVisibleFrameKey[] = "visibleFrame";
 const char kScaleFactorKey[] = "scaleFactor";
@@ -193,7 +194,10 @@ void WindowSizePlugin::HandleMethodCall(
             .from_bytes(*title);
     SetWindowText(GetRootWindow(registrar_->GetView()), wstr.c_str());
     result->Success();
-  } else {
+  } else if (method_call.method_name().compare(kSetWindowMaximizeMethod) == 0) {
+    ShowWindow(GetRootWindow(registrar_->GetView()), SW_MAXIMIZE);
+    result->Success();
+  }else {
     result->NotImplemented();
   }
 }
